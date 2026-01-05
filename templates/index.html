@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Python Runner</h2>
+<textarea id="code" rows="10" cols="50">print("Hello from Render!")</textarea><br>
+<input id="pkgs" placeholder="numpy,requests"><br>
+<button onclick="run()">Run</button>
+<pre id="out"></pre>
+
+<script>
+async function run() {
+  const res = await fetch("/run", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({
+      code: document.getElementById("code").value,
+      packages: document.getElementById("pkgs").value.split(",").filter(x=>x)
+    })
+  });
+  const data = await res.json();
+  document.getElementById("out").innerText = data.output;
+}
+</script>
+</body>
+</html>
